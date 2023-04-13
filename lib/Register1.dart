@@ -31,7 +31,7 @@ class _RegisrterState extends State<Register> {
       "mobile_no": mobile_no.text,
       "password": password.text
     };
-    var response = await post(Uri.parse('${Con.url}regi.php'), body: data);
+    var response = await post(Uri.parse('http://192.168.43.82/chatbotold/api/regi.php'), body: data);
     print(response.body);
     var res = jsonDecode(response.body);
     print(res);

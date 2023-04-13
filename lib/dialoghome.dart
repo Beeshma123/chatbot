@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: Colors.green,
         title: Text('Google Dialog Flow'),
       ),
       body: Container(

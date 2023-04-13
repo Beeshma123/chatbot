@@ -36,7 +36,7 @@ class _ProfileState extends State<Profile> {
     };
     // print(data);
     var response =
-    await post(Uri.parse('${Con.url}view.php'), body: data);
+    await post(Uri.parse('http://192.168.43.82/chatbotold/api/view.php'), body: data);
     print(response.body);
     var res = jsonDecode(response.body);
     return res;
@@ -54,7 +54,7 @@ class _ProfileState extends State<Profile> {
       "mobile_no": mobile_no.text,
       "password": password.text
     };
-    var response = await post(Uri.parse('${Con.url}update.php'), body: data);
+    var response = await post(Uri.parse('http://192.168.43.82/chatbotold/api/update.php'), body: data);
     print(response.body);
     var res = jsonDecode(response.body);
     if (res['message'] == 'Added') {
@@ -93,7 +93,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Lottie.asset('assets/profile.jpeg', height: 200),
                           Text(
-                            'Update your Profile',
+                            'Update your current Profile',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 0, 136, 240),
                                 fontSize: 20,

@@ -7,12 +7,11 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Profile.dart';
-
 import 'connection.dart';
+
 import 'dialoghome.dart';
 
 import 'newmodel.dart';
-
 
 class Chat extends StatefulWidget {
   const Chat({super.key});
@@ -21,11 +20,11 @@ class Chat extends StatefulWidget {
   State<Chat> createState() => _ChatState();
 }
 
-const backgroundColor = Colors.orange;
+const backgroundColor = Colors.blue;
 const botBackgroundColor = Color.fromARGB(246, 6, 33, 124);
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = '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';
+  const apiKey = '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';
 
   var url = Uri.https("api.openai.com", "/v1/completions");
   final response = await http.post(
@@ -63,8 +62,7 @@ class _ChatState extends State<Chat> {
     isLoading = false;
   }
 
-  Future<dynamic
-  > getData() async {
+  Future<dynamic> getData() async {
     SharedPreferences spref = await SharedPreferences.getInstance();
     var sp = spref.getString('user_id');
     print(sp);
@@ -73,9 +71,10 @@ class _ChatState extends State<Chat> {
       "id": sp,
     };
     var response =
-    await post(Uri.parse('${Con.url}view.php'), body: data);
+    await post(Uri.parse('http://192.168.43.82/chatbotold/api/view.php'), body: data);
     print(response.body);
     var res = jsonDecode(response.body);
+    print(res);
     return res;
   }
 
@@ -91,7 +90,11 @@ class _ChatState extends State<Chat> {
                 builder: (ctx) => FutureBuilder(
                     future: getData(),
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
+                      if (!snapshot.hasData) {
+                            return Center(child: CircularProgressIndicator());
+                         } else if(snapshot.data[0]['message']=='failed'){
+                        return Center(child: Text("no data"));
+                       }else{
                         return AlertDialog(
                           title: const Text("Profile"),
                           content: SizedBox(
@@ -102,8 +105,7 @@ class _ChatState extends State<Chat> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('Name : '),
-                                  Text(
-                                    snapshot.data![0]['name'],
+                                  Text(snapshot.data![0]['name'],
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -133,9 +135,9 @@ class _ChatState extends State<Chat> {
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Mobile : '),
+                                  Text('Mobile_no : '),
                                   Text(
-                                    snapshot.data![0]['mobile'],
+                                    snapshot.data![0]['mobile_no'],
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -177,7 +179,7 @@ class _ChatState extends State<Chat> {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                           BorderRadius.circular(50),
-                                          color: Colors.green),
+                                          color: Colors.blue),
                                       child: Center(
                                           child: Icon(
                                             Icons.edit,
@@ -194,7 +196,7 @@ class _ChatState extends State<Chat> {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                           BorderRadius.circular(50),
-                                          color: Colors.green),
+                                          color: Colors.blue),
                                       child: Center(
                                           child: const Text(
                                             "OK",
@@ -206,15 +208,16 @@ class _ChatState extends State<Chat> {
                           ],
                         );
                       }
-                      else if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else {
-                        return Text('no data');
-                      }
-                    }),
+                      // else if (snapshot.connectionState == ConnectionState.waiting) {
+                      //   return Center(child: CircularProgressIndicator());
+                      // } else {
+                      //   return Text('no data');
+
+
+            }),
               );
             },
-            child: Icon(Icons.person)),
+            child: Icon(Icons.person,color: Colors.black)),
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -244,8 +247,8 @@ class _ChatState extends State<Chat> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Connect Dialogue Flow '),
-                          Icon(Icons.connect_without_contact_outlined)
+                          Text('Connect-Dialogue Flow '),
+                          Icon(Icons.cast_connected_sharp)
                         ],
                       )),
                   width: 200,
@@ -259,7 +262,7 @@ class _ChatState extends State<Chat> {
                 onPressed: () {
                   SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                 },
-                child: Icon(Icons.power_settings_new_rounded),
+                child: Icon(Icons.settings_power_rounded,color: Colors.black87),
               ))
         ],
       ),
@@ -275,7 +278,7 @@ class _ChatState extends State<Chat> {
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: CircularProgressIndicator(
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -406,23 +409,24 @@ class ChatMessageWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             chatMessageType == ChatMessageType.bot
-                ? Container(
+                ?
+
+            Container(
               decoration: BoxDecoration(),
               margin: const EdgeInsets.only(right: 16.0),
               child: CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  backgroundColor: Color.fromARGB(246, 6, 33, 124),
                   child: Icon(
-                    Icons.person,
+                    Icons.person_pin,
                     color: Colors.black,
                   )),
             )
                 : Container(
               margin: const EdgeInsets.only(right: 16.0),
               child: const CircleAvatar(
-                backgroundColor: Color.fromARGB(246, 6, 33, 124),
                 child: Icon(
                   Icons.person,
-                  color: Colors.white,
+                  color: Colors.black87,
                 ),
               ),
             ),

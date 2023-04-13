@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
       "password": password.text,
     };
 
-    var response = await post(Uri.parse('${Con.url}log.php'), body: data);
+    var response = await post(Uri.parse('http://192.168.43.82/chatbotold/api/log.php'), body: data);
     print(response.body);
     var res = jsonDecode(response.body);
     if (res['message'] == 'Successfully LoggedIn') {
